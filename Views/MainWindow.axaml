@@ -1,0 +1,137 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:m="using:BibliotecaPersonal.Models"
+        x:Class="BibliotecaPersonal.Views.MainWindow"
+        Title="Biblioteca personal"
+        Width="1040" Height="680" MinWidth="860" MinHeight="580"
+        WindowStartupLocation="CenterScreen">
+
+    <DockPanel Margin="18">
+
+        <!-- Encabezado -->
+        <StackPanel DockPanel.Dock="Top" Margin="0,0,0,14" Spacing="2">
+            <TextBlock Text="Biblioteca personal" FontSize="24" FontWeight="Bold" />
+            <TextBlock Text="Registra tus libros, su autor y en qué estado de lectura van."
+                       Foreground="#666666" />
+        </StackPanel>
+
+        <!-- Ruta del archivo de base de datos -->
+        <TextBlock x:Name="TxtRutaBD" DockPanel.Dock="Bottom"
+                   FontSize="11" Foreground="#888888" Margin="0,8,0,0" />
+
+        <!-- Mensajes de resultado / error -->
+        <Border x:Name="BrdMensaje" DockPanel.Dock="Bottom" IsVisible="False"
+                CornerRadius="6" Padding="12,8" Margin="0,12,0,0" BorderThickness="1">
+            <TextBlock x:Name="TxtMensaje" TextWrapping="Wrap" />
+        </Border>
+
+        <Grid ColumnDefinitions="350,18,*">
+
+            <!-- ===================== Formulario ===================== -->
+            <Border Grid.Column="0" BorderBrush="#DDDDDD" BorderThickness="1"
+                    CornerRadius="8" Padding="16">
+                <ScrollViewer>
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Datos del libro" FontSize="17" FontWeight="SemiBold" />
+                        <TextBlock x:Name="TxtModo" Text="Nuevo registro"
+                                   FontSize="12" Foreground="#2E7D32" Margin="0,0,0,6" />
+
+                        <TextBlock Text="Título *" />
+                        <TextBox x:Name="TxtTitulo" Watermark="Ej: Cien años de soledad" MaxLength="150" />
+
+                        <TextBlock Text="Autor *" Margin="0,6,0,0" />
+                        <TextBox x:Name="TxtAutor" Watermark="Ej: Gabriel García Márquez" MaxLength="100" />
+
+                        <TextBlock Text="Género" Margin="0,6,0,0" />
+                        <TextBox x:Name="TxtGenero" Watermark="Ej: Novela (opcional)" MaxLength="50" />
+
+                        <Grid ColumnDefinitions="*,10,*" Margin="0,6,0,0">
+                            <StackPanel Grid.Column="0" Spacing="6">
+                                <TextBlock Text="Año publicación *" />
+                                <TextBox x:Name="TxtAnio" Watermark="1967" MaxLength="4" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Spacing="6">
+                                <TextBlock Text="Páginas *" />
+                                <TextBox x:Name="TxtPaginas" Watermark="471" MaxLength="5" />
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="Estado de lectura" Margin="0,6,0,0" />
+                        <ComboBox x:Name="CmbEstado" SelectedIndex="0" HorizontalAlignment="Stretch">
+                            <ComboBoxItem Content="Por leer" />
+                            <ComboBoxItem Content="Leyendo" />
+                            <ComboBoxItem Content="Leído" />
+                        </ComboBox>
+
+                        <TextBlock Text="Calificación (solo libros leídos)" Margin="0,6,0,0" />
+                        <ComboBox x:Name="CmbCalificacion" SelectedIndex="0" HorizontalAlignment="Stretch">
+                            <ComboBoxItem Content="Sin calificar" />
+                            <ComboBoxItem Content="★" />
+                            <ComboBoxItem Content="★★" />
+                            <ComboBoxItem Content="★★★" />
+                            <ComboBoxItem Content="★★★★" />
+                            <ComboBoxItem Content="★★★★★" />
+                        </ComboBox>
+
+                        <Grid ColumnDefinitions="*,8,*" RowDefinitions="Auto,8,Auto" Margin="0,16,0,0">
+                            <Button x:Name="BtnGuardar" Grid.Row="0" Grid.Column="0"
+                                    Content="Guardar" Classes="accent"
+                                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                                    Click="BtnGuardar_Click" />
+                            <Button x:Name="BtnActualizar" Grid.Row="0" Grid.Column="2"
+                                    Content="Actualizar"
+                                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                                    Click="BtnActualizar_Click" />
+                            <Button x:Name="BtnEliminar" Grid.Row="2" Grid.Column="0"
+                                    Content="Eliminar"
+                                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                                    Click="BtnEliminar_Click" />
+                            <Button x:Name="BtnLimpiar" Grid.Row="2" Grid.Column="2"
+                                    Content="Limpiar / Nuevo"
+                                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                                    Click="BtnLimpiar_Click" />
+                        </Grid>
+
+                        <TextBlock Text="* Campos obligatorios" FontSize="11"
+                                   Foreground="#888888" Margin="0,6,0,0" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- ===================== Lista de libros ===================== -->
+            <Border Grid.Column="2" BorderBrush="#DDDDDD" BorderThickness="1"
+                    CornerRadius="8" Padding="16">
+                <DockPanel>
+                    <Grid DockPanel.Dock="Top" ColumnDefinitions="*,8,Auto,8,Auto" Margin="0,0,0,10">
+                        <TextBox x:Name="TxtBuscar" Grid.Column="0"
+                                 Watermark="Buscar por título, autor o género..."
+                                 KeyDown="TxtBuscar_KeyDown" />
+                        <Button Grid.Column="2" Content="Buscar" Click="BtnBuscar_Click" />
+                        <Button Grid.Column="4" Content="Mostrar todos" Click="BtnMostrarTodos_Click" />
+                    </Grid>
+
+                    <TextBlock x:Name="TxtTotal" DockPanel.Dock="Bottom"
+                               FontSize="12" Foreground="#666666" Margin="0,8,0,0" />
+
+                    <Panel>
+                        <ListBox x:Name="LstLibros" SelectionMode="Single"
+                                 SelectionChanged="LstLibros_SelectionChanged">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate x:DataType="m:Libro">
+                                    <StackPanel Spacing="2" Margin="0,2">
+                                        <TextBlock Text="{Binding Titulo}" FontWeight="SemiBold" FontSize="14" />
+                                        <TextBlock Text="{Binding Detalle}" FontSize="12" Foreground="#666666" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <TextBlock x:Name="TxtListaVacia" IsVisible="False"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   TextAlignment="Center" Foreground="#888888"
+                                   Text="No hay libros para mostrar.&#10;Registra uno con el formulario de la izquierda." />
+                    </Panel>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>
