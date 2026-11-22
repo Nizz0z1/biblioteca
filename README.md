@@ -304,50 +304,7 @@ Todos los datos del usuario entran como **parámetros** (`@titulo`, `@autor`, `@
 
 ---
 
-## 8. Evidencias de funcionamiento
-
-Capturas guardadas en la carpeta [`evidencias/`](evidencias/).
-
-### Prueba 1 — Registro
-**Acción:** se llenó el formulario con *Cien años de soledad*, Gabriel García Márquez, Novela, 1967, 471 páginas, Leído, 5 estrellas, y se pulsó **Guardar**.
-**Resultado:** aparece el aviso verde "Libro registrado correctamente (Id 1)" y el libro se agrega a la lista.
-
-![Registro](evidencias/01_registro.png)
-
-### Prueba 2 — Consulta
-**Acción:** con varios libros registrados, se visualiza la lista y se busca "García" en el cuadro de búsqueda.
-**Resultado:** la lista muestra los libros guardados en la base de datos y el filtro deja solo las coincidencias.
-
-![Consulta](evidencias/02_consulta.png)
-
-### Prueba 3 — Actualización
-**Acción:** se seleccionó un libro, se cambió su estado de *Leyendo* a *Leído* y se le asignaron 4 estrellas; luego **Actualizar**.
-**Resultado:** aviso "Libro actualizado correctamente" y la lista refleja el nuevo estado y la calificación.
-
-![Actualización](evidencias/03_actualizacion.png)
-
-### Prueba 4 — Eliminación
-**Acción:** se seleccionó un libro, se pulsó **Eliminar** y se confirmó en la ventana modal.
-**Resultado:** aviso "Libro eliminado" y el registro deja de aparecer en la lista.
-
-![Confirmación de eliminación](evidencias/04a_eliminacion_confirmar.png)
-![Eliminación](evidencias/04b_eliminacion_resultado.png)
-
-### Prueba 5 — Validación
-**Acción:** se intentó guardar con el título vacío, año "abc", páginas "-5" y calificación de 3 estrellas en un libro *Por leer*.
-**Resultado:** el programa no se cierra; muestra un aviso rojo con la lista de errores de cada campo.
-
-![Validación](evidencias/05_validacion.png)
-
-### Prueba 6 — Persistencia
-**Acción:** se cerró la aplicación y se volvió a ejecutar con `dotnet run`.
-**Resultado:** los libros registrados siguen apareciendo en la lista.
-
-![Persistencia](evidencias/06_persistencia.png)
-
----
-
-## 9. Problemas encontrados y soluciones
+## 8. Problemas encontrados y soluciones
 
 **1. Avalonia no tiene un `MessageBox` integrado.**
 Para confirmar la eliminación se necesitaba una ventana de "¿Está seguro?", pero Avalonia (a diferencia de WinForms o WPF) no trae `MessageBox.Show`.
